@@ -1,16 +1,26 @@
 package agh.ics.oop;
 
 public class Animal {
-    private MapDirection orientation;
-    private Vector2d position;
+    private MapDirection orientation = MapDirection.NORTH;
+    private Vector2d position = new Vector2d(2, 2);
+    private final IWorldMap map;
 
-    public Animal() {
-        this.orientation = MapDirection.NORTH;
-        this.position = new Vector2d(2, 2);
+    public Animal(IWorldMap map) {
+        this.map = map;
+    }
+
+    public Animal(IWorldMap map, Vector2d initialPosition) {
+        this.map = map;
+        this.position = initialPosition;
     }
 
     public String toString() {
-        return this.position + "," + this.orientation;
+        return switch(this.orientation) {
+            case NORTH -> "N";
+            case EAST -> "E";
+            case SOUTH -> "S";
+            case WEST -> "W";
+        };
     }
 
     public MapDirection getOrientation() {
@@ -25,32 +35,24 @@ public class Animal {
         return this.position.equals(position);
     }
 
-    private boolean isInRange(Vector2d position) {
-        return position.follows(new Vector2d(0, 0)) && position.precedes(new Vector2d(4, 4));
-    }
-
     public void move(MoveDirection direction) {
         switch (direction) {
-            case RIGHT:
-                this.orientation = this.orientation.next();
-                break;
-            case LEFT:
-                this.orientation = this.orientation.previous();
-                break;
-            case FORWARD:
+            case RIGHT -> this.orientation = this.orientation.next();
+            case LEFT -> this.orientation = this.orientation.previous();
+            case FORWARD -> {
                 Vector2d addAnimal = this.position.add(this.orientation.toUnitVector());
-                if (isInRange(addAnimal)) {
+                if (this.map.canMoveTo(addAnimal)) {
                     this.position = addAnimal;
                 }
-                break;
-            case BACKWARD:
+            }
+            case BACKWARD -> {
                 Vector2d subtractAnimal = this.position.subtract(this.orientation.toUnitVector());
-                if (isInRange(subtractAnimal)) {
+                if (this.map.canMoveTo(subtractAnimal)) {
                     this.position = subtractAnimal;
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
     }
 }
