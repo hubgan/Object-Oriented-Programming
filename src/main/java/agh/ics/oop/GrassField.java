@@ -24,6 +24,7 @@ public class GrassField extends AbstractWorldMap implements IWorldMap {
             if (!isOccupied(grassPosition)) {
                 counter += 1;
                 this.elements.put(grassPosition, new Grass(grassPosition));
+                this.mapBoundary.add(grassPosition);
             }
         }
     }
@@ -34,18 +35,19 @@ public class GrassField extends AbstractWorldMap implements IWorldMap {
 
         if (element instanceof Grass) {
             this.elements.remove(((Grass) element).getPosition());
+            this.mapBoundary.remove(((Grass) element).getPosition());
             createRandomGrass(1);
         }
 
         return !(element instanceof Animal);
     }
 
-    public String toString() {
-        for (Vector2d element: this.elements.keySet()) {
-            this.lower = this.lower.lowerLeft(element);
-            this.upper = this.upper.upperRight(element);
-        }
+    @Override
+    public Vector2d[] getMapBorders() {
+        return this.mapBoundary.getMapBorders();
+    }
 
+    public String toString() {
         return super.toString();
     }
 }

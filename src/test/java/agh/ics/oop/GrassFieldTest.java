@@ -17,9 +17,8 @@ public class GrassFieldTest {
     void testPlace() {
         GrassField map = new GrassField(10);
         assertTrue(map.place(new Animal(map, new Vector2d(4, 4))));
-        assertFalse(map.place(new Animal(map, new Vector2d(4, 4))));
+        assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map, new Vector2d(4, 4))));
         assertTrue(map.place(new Animal(map, new Vector2d(-20, 10))));
-        assertFalse(map.place(new Animal(map, new Vector2d(-20, 10))));
         assertTrue(map.place(new Animal(map, new Vector2d(Integer.MAX_VALUE, Integer.MIN_VALUE))));
     }
 

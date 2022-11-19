@@ -14,4 +14,9 @@ public class RectangularMap extends AbstractWorldMap implements IWorldMap {
                 position.precedes(upper) &&
                 !(element instanceof Animal);
     }
+
+    @Override
+    public Vector2d[] getMapBorders() {
+        return new Vector2d[]{this.lower, this.upper};
+    }
 }

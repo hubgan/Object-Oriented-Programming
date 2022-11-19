@@ -20,14 +20,7 @@ public class OptionsParserTest {
 
         String[] secondInput = new String[]{"b", "FORWARD", "first", "l", "lazy", "f", "F", "forward", "r", "R", "l", "b",
                 "bad", "r", "random", "r", "R", "LEFT", "f", "RIGHT", "f", "BACKWARD", "b"};
-        MoveDirection[] secondOutput = new MoveDirection[]{MoveDirection.BACKWARD, MoveDirection.LEFT,
-                MoveDirection.FORWARD, MoveDirection.FORWARD, MoveDirection.RIGHT, MoveDirection.LEFT,
-                MoveDirection.BACKWARD, MoveDirection.RIGHT, MoveDirection.RIGHT, MoveDirection.FORWARD,
-                MoveDirection.FORWARD, MoveDirection.BACKWARD};
-        MoveDirection[] parsedSecondInput = parser.parse(secondInput);
 
-        for (int i = 0; i < 12; i++) {
-            assertEquals(secondOutput[i], parsedSecondInput[i]);
-        }
+        assertThrows(IllegalArgumentException.class, () -> parser.parse(secondInput));
     }
 }
