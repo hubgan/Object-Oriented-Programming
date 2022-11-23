@@ -21,7 +21,7 @@ public class AnimalTest {
         }
 
         Animal secondTestAnimal = new Animal(new RectangularMap(5, 5), new Vector2d(2, 2));
-        String[] secondInput = new String[]{"r", "FORWARD", "f", "f", "first", "f", "second", "l", "RIGHT", "f", "f",
+        String[] secondInput = new String[]{"r", "f", "f", "f", "l", "f", "f",
                 "right", "f"};
         MoveDirection[] parsedSecondInput = parser.parse(secondInput);
         MapDirection[] secondOutput = new MapDirection[]{MapDirection.EAST, MapDirection.EAST, MapDirection.EAST,
@@ -78,7 +78,7 @@ public class AnimalTest {
         }
 
         Animal secondTestAnimal = new Animal(new RectangularMap(5, 5));
-        String[] secondInput = new String[]{"f", "first", "l", "f", "left", "BACKWARD", "b", "bad", "b", "r", "RIGHT",
+        String[] secondInput = new String[]{"f", "l", "f", "left", "b", "b", "r",
                 "b", "b", "b", "b"};
         MoveDirection[] parsedSecondInput = parser.parse((secondInput));
         Vector2d[] secondOutput = new Vector2d[]{new Vector2d(2, 3), new Vector2d(2, 3), new Vector2d(1, 3),
