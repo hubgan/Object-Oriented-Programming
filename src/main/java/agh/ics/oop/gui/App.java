@@ -11,10 +11,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+
 public class App extends Application {
     IWorldMap map;
-    int cellWidth = 30;
-    int cellHeight = 30;
+    int cellWidth = 40;
+    int cellHeight = 40;
 
     public void init() {
 //        RectangularMap
@@ -46,10 +48,10 @@ public class App extends Application {
         gridPane.setGridLinesVisible(true);
 
         Vector2d[] borders = this.map.getMapBorders();
-        int leftX = borders[0].x;
-        int bottomY = borders[0].y;
-        int rightX = borders[1].x;
-        int topY = borders[1].y;
+        int leftX = borders[0].x - 1;
+        int bottomY = borders[0].y - 1;
+        int rightX = borders[1].x + 1;
+        int topY = borders[1].y + 1;
 
         Label yxLabel = new Label("y/x");
         gridPane.add(yxLabel, 0, 0, 1, 1);
@@ -80,17 +82,22 @@ public class App extends Application {
 
                 if (element == null) {
                     label = new Label("");
+                    gridPane.add(label, i, j, 1, 1);
+                    GridPane.setHalignment(label, HPos.CENTER);
                 }
                 else {
-                    label = new Label(element.toString());
+                    try {
+                        IMapElement object = (IMapElement) element;
+                        GuiElementBox mapElement = new GuiElementBox(object);
+                        gridPane.add(mapElement.getStyleableNode(), i, j);
+                    } catch (FileNotFoundException exception) {
+                        exception.printStackTrace();
+                    }
                 }
-
-                gridPane.add(label, i, j, 1, 1);
-                GridPane.setHalignment(label, HPos.CENTER);
             }
         }
 
-        Scene scene = new Scene(gridPane, 400, 400);
+        Scene scene = new Scene(gridPane, 600, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

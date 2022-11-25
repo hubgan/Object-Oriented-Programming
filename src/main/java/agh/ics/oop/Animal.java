@@ -70,4 +70,19 @@ public class Animal extends AbstractWorldMapElement{
             observer.positionChanged(position, this.position);
         }
     }
+
+    @Override
+    public String getImageResource() {
+        return switch (this.orientation) {
+            case NORTH -> "/src/main/resources/up.png";
+            case SOUTH -> "/src/main/resources/down.png";
+            case WEST -> "/src/main/resources/left.png";
+            case EAST -> "/src/main/resources/right.png";
+        };
+    }
+
+    @Override
+    public String getLabel() {
+        return "Z " + this.getPosition().toString();
+    }
 }
