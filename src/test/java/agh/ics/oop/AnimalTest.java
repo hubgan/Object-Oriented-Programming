@@ -54,8 +54,7 @@ public class AnimalTest {
 
         for (int i = 0; i < 3; i++) {
             Object animal = map.objectAt(positions[i]);
-            if (animal instanceof Animal) {
-                Animal that = (Animal) animal;
+            if (animal instanceof Animal that) {
                 assertEquals(thirdOutput[i], that.getOrientation());
             }
         }
