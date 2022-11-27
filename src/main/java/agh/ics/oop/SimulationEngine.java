@@ -6,7 +6,7 @@ import javafx.application.Platform;
 import java.util.ArrayList;
 
 public class SimulationEngine implements IEngine, Runnable {
-    private final MoveDirection[] directions;
+    private MoveDirection[] directions;
     private final IWorldMap map;
     private final ArrayList<Animal> animals = new ArrayList<>();
     private App app = null;
@@ -15,6 +15,20 @@ public class SimulationEngine implements IEngine, Runnable {
     public SimulationEngine(MoveDirection[] directions, IWorldMap map, Vector2d[] positions) {
         this.directions = directions;
         this.map = map;
+
+        for (Vector2d position: positions) {
+            Animal animal = new Animal(this.map, position);
+
+            if (this.map.place(animal)) {
+                this.animals.add(animal);
+            }
+        }
+    }
+
+    public SimulationEngine(IWorldMap map, Vector2d[] positions, App app, int delay) {
+        this.map = map;
+        this.delay = delay;
+        this.app = app;
 
         for (Vector2d position: positions) {
             Animal animal = new Animal(this.map, position);
@@ -40,6 +54,10 @@ public class SimulationEngine implements IEngine, Runnable {
         }
     }
 
+    public void setDirections(MoveDirection[] directions) {
+        this.directions = directions;
+    }
+
     @Override
     public void run() {
         int numberOfAnimals = this.animals.size();
@@ -59,6 +77,7 @@ public class SimulationEngine implements IEngine, Runnable {
                     System.out.println(this.map);
                 }
             } catch (InterruptedException exception) {
+                System.out.println("The application has stopped " + exception);
                 exception.printStackTrace();
             }
         }

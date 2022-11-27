@@ -4,11 +4,12 @@ import agh.ics.oop.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
@@ -16,6 +17,8 @@ import java.io.FileNotFoundException;
 public class App extends Application {
     private IWorldMap map;
     private final GridPane gridPane = new GridPane();
+    private SimulationEngine engine;
+    private final OptionsParser optionsParser = new OptionsParser();
     int cellWidth = 40;
     int cellHeight = 40;
 
@@ -34,12 +37,9 @@ public class App extends Application {
 //        }
 //        GrassField
         try {
-            MoveDirection[] directions = new OptionsParser().parse(getParameters().getRaw().toArray(new String[0]));
             this.map = new GrassField(10);
             Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-            SimulationEngine engine = new SimulationEngine(directions, this.map, positions, this, 300);
-            Thread engineThread = new Thread(engine);
-            engineThread.start();
+            this.engine = new SimulationEngine(this.map, positions, this, 300);
         } catch(IllegalArgumentException exception) {
             exception.printStackTrace();
             Platform.exit();
@@ -48,7 +48,23 @@ public class App extends Application {
 
     public void start(Stage primaryStage) {
         renderGridPane();
-        Scene scene = new Scene(gridPane, 600, 600);
+        this.gridPane.setAlignment(Pos.TOP_CENTER);
+        Button start = new Button("Start");
+        TextField moveDirections = new TextField();
+        HBox guiControls = new HBox(moveDirections, start);
+        VBox gui = new VBox(guiControls, this.gridPane);
+        guiControls.setAlignment(Pos.TOP_CENTER);
+        gui.setSpacing(20);
+
+        start.setOnAction((click) -> {
+            MoveDirection[] directions = this.optionsParser.parse(moveDirections.getText().split(" "));
+            this.engine.setDirections(directions);
+            Thread engineThread = new Thread(this.engine);
+            engineThread.start();
+            moveDirections.clear();
+        });
+
+        Scene scene = new Scene(gui, 600, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
