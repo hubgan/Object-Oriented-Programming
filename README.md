@@ -1,3 +1,3 @@
-# Programowanie-Obiektowe 2022/23
+# Object Oriented Programming
 
-Rozwiązania zadań z laboratoriów z przedmiotu Programowanie Obiektowe Informatyki WIEiT AGH.
+The repository contains solutions to object oriented programming course at AGH UST (2022/23).
